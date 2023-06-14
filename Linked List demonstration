@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct node{
+int PRN;
+char name[20];
+struct node *next;
+};
+void create(struct node *head){
+int ch;
+struct node *temp,*curr;
+temp=head;
+do{
+curr=(struct node*) malloc(sizeof(struct node));
+//accept prn and name
+scanf("%d",&curr->PRN);
+scanf("%s",curr->name);
+curr->next=NULL;
+temp->next=curr;
+temp=curr;
+printf("\ndo you want to add another node press y/n:0/1 ");
+scanf("%d",&ch);
+}while(ch==0);
+}
+void display(struct node *head){
+struct node *curr;
+if(head->next==NULL){
+printf("\nlist is empty");
+}
+else {
+curr=head->next;
+while(curr != NULL){
+printf("\n%d ",curr->PRN);
+printf("%s ",curr->name);
+curr=curr->next;
+}
+}
+
+}
+int length(struct node *head){
+struct node *curr;
+curr = head->next;
+int i=0;
+while(curr != NULL){
+i++;
+curr = curr->next;
+}
+return i;
+}
+void insert(struct node *head){
+struct node *curr,*new;
+int pos,i;
+curr = head;
+printf("\nenter position to enter new node: ");
+scanf("%d",&pos);
+if (pos>length(head)+1) printf("\ninput is greater than length of linked list");
+else{
+for(i=1;i<pos;i++){
+curr = curr->next;
+}
+new = (struct node*) malloc(sizeof(struct node));
+printf("\nenter prn and name: ");
+scanf("%d",&new->PRN);
+scanf("%s",new->name);
+new->next = curr->next;
+curr->next = new;
+display(head);
+}
+}
+void delete(struct node *head){
+struct node *curr,*temp;
+int pos,i;
+curr=head;
+printf("\nenter position to delete node: ");
+scanf("%d",&pos);
+if (pos>length(head)) printf("\ninput is greater than length of linked list");
+else{
+for(i=1;i<pos;i++){
+curr = curr->next;
+
+}
+temp=curr->next;
+curr->next= temp->next;
+}
+}
+void reverse(struct node *head){
+struct node *curr,*prev,*next;
+curr=head->next;
+prev=NULL;
+next=NULL;
+while(curr!=NULL){
+next=curr->next;
+curr->next = prev;
+prev = curr;
+curr = next;
+}
+head->next = prev;
+}
+void sort(struct node *head)
+{
+struct node *ptr1 , *cpt;
+int temp;
+char temp1[20];
+ptr1=head->next;
+while (ptr1->next != NULL)
+{
+cpt=ptr1->next;
+while (cpt!=NULL)
+{
+if(ptr1->PRN>cpt->PRN)
+{
+temp=cpt->PRN;
+strcpy(temp1,cpt->name); //temp1=cpt->name;
+cpt->PRN=ptr1->PRN;
+strcpy(cpt->name,ptr1->name);
+ptr1->PRN=temp;
+strcpy(ptr1->name,temp1);
+}
+cpt=cpt->next;
+}
+ptr1=ptr1->next;
+}
+
+}
+
+int main(){
+printf("hello world");
+struct node *head;
+
+head = (struct node*) malloc(sizeof(struct node));
+head->next = NULL;
+int ch,l;
+do{
+printf("\nenter ch: \n1: create \n2: display \n3: length \n4: insert \n5: delete
+\n6: reverse \n7: sort \n\nchoice: ");
+scanf("%d",&ch);
+switch(ch){
+case 1: create(head);
+break;
+case 2: display(head);
+break;
+case 3: l = length(head);
+printf("\nlength of linked list is: %d",l);
+break;
+case 4: insert(head);
+break;
+case 5: delete(head);
+break;
+case 6: reverse(head);
+break;
+
+case 7: sort(head);
+break;
+}
+}while(ch<8);
+return 0;
+}
