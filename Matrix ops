@@ -1,0 +1,136 @@
+// assignment 1
+//matrix operations
+
+// Online C compiler to run C program online
+#include <stdio.h>
+
+void read(int a[10][10], int rows, int cols){
+
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+scanf("%d",&a[i][j]);
+}
+}
+}
+
+void display(int a[10][10], int rows, int cols){
+
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+printf("%d\t",a[i][j]);
+}
+printf("\n");
+}
+}
+
+void add(int a[10][10],int b[10][10], int rows, int cols){
+int c[10][10];
+printf("\nAdded matrix:\n");
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+c[i][j] = a[i][j] + b[i][j];
+printf("%d\t",c[i][j]);
+}
+printf("\n");
+
+}
+}
+
+void sub(int a[10][10],int b[10][10], int rows, int cols){
+int c[10][10];
+printf("\nSubtracted matrix:\n");
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+c[i][j] = a[i][j] - b[i][j];
+printf("%d\t",c[i][j]);
+}
+printf("\n");
+}
+}
+
+void transpose(int a[10][10],int d[10][10], int rows, int cols){
+printf("\nTranspose matrix:\n");
+for(int i = 0;i<cols;i++){
+for(int j =0; j<rows;j++){
+d[i][j] = a[j][i];
+printf("%d\t",d[i][j]);
+}
+printf("\n");
+}
+}
+
+void mul(int a[10][10],int b[10][10], int c[10][10], int rows, int cols){
+
+printf("\nMultiplied matrix:\n");
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+c[i][j] = 0;
+for(int k=0;k<cols;k++)
+{
+
+c[i][j] = c[i][j]+a[i][k]*b[k][j];
+}
+printf("%d\t",c[i][j]);
+}
+printf("\n");
+}
+}
+
+int main() {
+// Write C code here
+printf("Hello world");
+int a[10][10], b[10][10], c[10][10],d[10][10], m1,n1,m2,n2,ch;
+
+do {
+printf("\nEnter your choice: \n1:enter matrices \n2:display matrices \n3:addition \n4:subtraction \n5:multiplication \n6:transpose\n");
+scanf("%d", &ch);
+
+switch(ch)
+{
+case 1:
+printf("\nEnter no of rows and columns for 1st matrix:");
+scanf("%d",&m1);
+scanf("%d",&n1);
+printf("\nEnter elements of 1st matrix:");
+read(a,m1,n1);
+
+printf("\nEnter no of rows and columns for 2nd matrix:");
+scanf("%d",&m2);
+scanf("%d",&n2);
+printf("\nEnter elements of 2st matrix:");
+read(b,m2,n2);
+break;
+
+case 2:
+
+printf("\n1st matrix\n");
+display(a,m1,n1);
+
+printf("\n2nd matrix\n");
+display(b,m2,n2);
+break;
+case 3:
+if(m1==m2 && n1==n2) add(a,b,m1,n1);
+else printf("\nmatrices need to have same dimensions");
+break;
+
+case 4:
+if(m1==m2 && n1==n2) sub(a,b,m1,n1);
+else printf("\nmatrices need to have same dimensions");
+break;
+
+case 5:
+if(n1==m2) mul(a,b,c,m1,n2);
+else printf("\nincorrect dimensions of matrix for
+multiplication");
+break;
+case 6:
+transpose(a,d,m1,n1);
+break;
+
+}
+
+}while(ch<7);
+
+return 0;
+}
