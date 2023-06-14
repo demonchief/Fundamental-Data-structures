@@ -1,0 +1,110 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#include<math.h>
+#define MAX 20
+int top = -1;
+int stack[MAX];
+int power(int a, int b){
+int ans = 1;
+for(int i = 0; i < b; i++)
+ans *= a;
+return ans;
+}
+
+int isEmpty ()
+{
+if (top == -1)
+{
+return 1;
+}
+else
+{
+return 0;
+}
+}
+int isFull ()
+{
+if (top == MAX - 1)
+{
+return 1;
+}
+else
+{
+return 0;
+}
+}
+void push(int a)
+{
+if(isFull())
+{
+printf("\n Stack is FUll !");
+}
+
+else
+{
+stack[++top] = a;
+}
+}
+int pop()
+{
+if(isEmpty())
+{
+printf("Stack is Empty !");
+return -1;
+}
+else
+{
+top--;
+return stack[top+1];
+}
+}
+int calc(int a,int b,char op){
+int ans;
+switch(op){
+case '+':
+ans=a+b;
+break;
+case '-':
+ans=a-b;
+break;
+case '*':
+ans=a*b;
+break;
+case '/':
+ans=a/b;
+break;
+case '^':
+ans=power(a,b);
+break;
+default:;
+}
+return ans;
+}
+void eval(char post[MAX]){
+int z,a,b,ans;
+
+for(int i=0;post[i]!='\0';i++){
+if((isalpha(post[i])!=0)){
+
+printf("\nEnter value of: %c",post[i]);
+scanf("%d",&z);
+push(z);
+}
+else{
+a=pop();
+b=pop();
+ans=calc(b,a,post[i]);
+push(ans);
+}
+}
+printf("\nEvaluation is:");
+printf("%d",stack[top]);
+}
+int main ()
+{
+char str[MAX];
+printf("\nEnter the expression: ");
+scanf("%s",str);
+eval(str);
+}
