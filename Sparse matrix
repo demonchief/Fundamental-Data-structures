@@ -1,0 +1,126 @@
+// sparse matrix
+#include <stdio.h>
+#include <stdlib.h>
+
+void read(int a[10][10], int rows, int cols){
+
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+scanf("%d",&a[i][j]);
+}
+}
+}
+
+void display(int a[10][10], int rows, int cols){
+
+for(int i = 0;i<rows;i++){
+for(int j =0; j<cols;j++){
+printf("%d\t",a[i][j]);
+}
+printf("\n");
+}
+}
+
+void sparse2compact(int a[10][10],int c[10][3], int m1, int n1){
+int k=1;
+for(int i = 0;i<m1;i++){
+for(int j =0; j<n1;j++){
+if(a[i][j]!=0){
+c[k][0]=i;
+c[k][1]=j;
+c[k][2]=a[i][j];
+k++;
+}
+}
+
+}
+c[0][0]=m1;
+c[0][1]=n1;
+c[0][2]=k-1;
+}
+
+void print_compact(int c[10][3]){
+int k = c[0][2]+1;
+for(int i = 0;i<k;i++){
+for(int j =0; j<3;j++){
+printf("%d\t",c[i][j]);
+}
+printf("\n");
+}
+}
+
+void simple_transpose(int c[10][3], int c_trans[10][3]){
+int pos = 1;
+int m,n,t;
+m=c[0][0];
+n=c[0][1];
+t=c[0][2];
+
+c_trans[0][0]= n;
+c_trans[0][1]= m;
+c_trans[0][2]= t;
+
+for(int i =0;i<n;i++){
+for(int j=1;j<=t;j++){
+if(c[j][1]==i){
+c_trans[pos][0]=c[j][1];
+c_trans[pos][1]=c[j][0];
+c_trans[pos][2]=c[j][2];
+pos++;
+
+}
+}
+}
+}
+
+void fast_transpose(int c[10][3]){
+int c_ftrans[10][3];
+int rterm[10],rpose[10];
+for(int i=0; i<c[0][1]; i++){
+rterm[i]=0;
+}
+for(int i =1;i<=c[0][2]; i++){
+rterm[c[i][1]]++;
+}
+rpose[0]=1;
+for(int i =1;i<c[0][1]; i++){
+rpose[i]=rpose[i-1]+rterm[i-1];
+}
+for(int i=1;i<=c[0][2];i++){
+int local=rpose[c[i][1]];
+c_ftrans[local][0]=c[i][1];
+c_ftrans[local][1]=c[i][0];
+c_ftrans[local][2]=c[i][2];
+rpose[c[i][1]]++;
+}
+c_ftrans[0][0]=c[0][1];
+c_ftrans[0][1]=c[0][0];
+c_ftrans[0][2]=c[0][2];
+printf("\n fast transpose matrix is: \n");
+print_compact(c_ftrans);
+}
+
+int main(void) {
+printf("hello world");
+
+int a[10][10],c[10][3],m1,n1,c_trans[10][3];
+printf("\nEnter no of rows and columns for 1st matrix:");
+scanf("%d",&m1);
+scanf("%d",&n1);
+printf("\nEnter elements of 1st matrix:");
+read(a,m1,n1);
+
+printf("\n1st matrix\n");
+display(a,m1,n1);
+
+sparse2compact(a,c,m1,n1);
+
+printf("\n Compact matrix is: \n");
+print_compact(c);
+simple_transpose(c,c_trans);
+printf("\nTranspose matrix is\n");
+print_compact(c_trans);
+printf("fast transpose is:\n");
+fast_transpose(c);
+return EXIT_SUCCESS;
+}
