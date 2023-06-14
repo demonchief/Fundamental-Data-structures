@@ -1,0 +1,155 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define size 20
+#define max 20
+int top =-1;
+int isEmpty(){
+if (top==-1) return 1;
+else return 0;
+}
+int isFull(){
+if(top==size-1) return 1;
+else return 0;
+}
+void push(char stack[size],char ele){
+if(!isFull()){
+top++;
+stack[top] = ele;
+}
+else printf("\nstack full\n");
+}
+char pop(char stack[size]){
+char popped_ele;
+if(!isEmpty()){
+popped_ele = stack[top];
+top--;
+}
+else printf("\nstack is empty\n");
+return popped_ele;
+}
+void display(char stack[size]){
+printf("\nstack elements are: ");
+for(int i=top;i>=0;i--){
+printf("%c \t",stack[i]);
+}
+printf("\n");
+}
+char gettop(char stack[size]){
+return stack[top];
+}
+
+int icp(char oper){
+switch(oper){
+case '(':
+return 5;
+break;
+case ')':
+return 5;
+break;
+case '^':
+return 4;
+break;
+case '*':
+return 2;
+break;
+case '/':
+return 2;
+break;
+case '%':
+return 2;
+break;
+case '+':
+return 1;
+break;
+case '-':
+return 1;
+break;
+default:
+return 0;
+break;
+
+}
+}
+int isp(char oper){
+switch(oper){
+case '^':
+return 3;
+
+break;
+case '*':
+return 2;
+break;
+case '/':
+return 2;
+break;
+case '%':
+return 2;
+break;
+case '+':
+return 1;
+break;
+case '-':
+return 1;
+break;
+default:
+return 0;
+break;
+}
+}
+void postfix(char inpArray[max],char outArray[max],char stack[size]){
+
+int i=0;
+int j=0;
+char token;
+printf("enter input: infix expression: ");
+scanf("%s",inpArray);
+
+while (inpArray[i] !='\0'){
+if(!icp(inpArray[i])){
+outArray[j] = inpArray[i];
+j++;
+}
+else{
+
+if (inpArray[i] == '('){
+push(stack,inpArray[i]);
+}
+else if (inpArray[i] ==')'){
+while((token= pop(stack)) != '(') {
+outArray[j] = token;
+j++;
+}
+}
+else if(icp(inpArray[i]) > isp(stack[top]) || top==-1){
+push(stack,inpArray[i]);
+}
+else if (icp(inpArray[i]) <= isp(stack[top]) || top==-1){
+while(icp(inpArray[i]) <= isp(stack[top])){
+outArray[j] = pop(stack);
+j++;
+}
+push(stack, inpArray[i]);
+}
+}
+i++;
+}
+while(!isEmpty()){
+outArray[j] = pop(stack);
+j++;
+}
+outArray[j]='\0';
+i=0;
+printf("\nthe postfix expression is: ");
+while (outArray[i] !='\0'){
+printf("%c",outArray[i]);
+i++;
+}
+printf("\n");
+}
+int main(){
+char stack[size],inpArray[max],outArray[max];
+printf("hello\n");
+postfix(inpArray,outArray,stack);
+
+return 0;
+}
