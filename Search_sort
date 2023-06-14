@@ -1,0 +1,167 @@
+// searching and sorting
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct student{
+int rn;
+char name[10];
+int marks;
+};
+
+void accept(struct student s[10], int n){
+for (int i =1;i<=n;i++){
+printf("\nEnter Roll no of student: ");
+scanf("%d",&s[i].rn);
+printf("\nEnter name of student: ");
+scanf("%s",s[i].name);
+printf("\nEnter marks of student: ");
+scanf("%d",&s[i].marks);
+}
+}
+
+void display(struct student s[10], int n){
+printf("\nRoll no Name \t Marks\n");
+for(int i =1;i<=n;i++){
+printf("\n %d \t %s \t %d",s[i].rn,s[i].name,s[i].marks);
+}
+}
+
+void linear_search(struct student s[10], int n, int srno){
+int loc;
+for(int i=1;i<=n;i++){
+if(s[i].rn == srno){
+printf("\nStudent with roll no %d found at location %d",srno,i);
+loc = i;
+}
+}
+printf("\n Student Roll no: %d",s[loc].rn);
+
+printf("\n Student name: %s",s[loc].name);
+printf("\n Student Marks: %d",s[loc].marks);
+}
+
+void binary_search(struct student s[10], int n, int srno){
+int loc;
+int low = 1;
+int high = n;
+int mid = (low+high)/2;
+while(low<high){
+if(srno > s[mid].rn){
+low = mid +1;
+mid = (low+high)/2;
+}
+else if(srno < s[mid].rn){
+high = mid -1;
+mid = (low+high)/2;
+}
+else if(srno == s[mid].rn){
+loc = mid;
+break;
+}
+}
+printf("\n Student with roll no %d found at location %d", srno,loc);
+}
+
+void selection_sort(struct student s[10], int n){
+int min, loc;
+struct student temp;
+for(int i =1;i<n;i++){
+//min=s[i].rn;
+min=i;
+for (int j=i+1;j<=n;j++){
+
+if (s[j].rn < s[min].rn){
+//min = s[j].rn;
+//loc = j;
+min=j;
+}
+}
+temp = s[i];
+s[i]= s[min];
+s[min]= temp;
+display(s,n);
+
+}
+}
+
+void insertion_sort(struct student s[10], int n){
+int key,j,loc;
+int comp;
+for(int i = 2;i<=n;i++){ //i is pass
+key = s[i].rn;
+j=i-1;
+while(j>=0 && s[j].rn >key){
+s[j+1] = s[j];
+j=j-1;
+}
+s[j+1].rn = key;
+display(s,n);
+}
+}
+
+void shell_sort(struct student s[10], int n){
+int gap,swap;
+struct student temp;
+gap = n/2;
+do{
+
+do{
+swap =0;
+for(int i = 1;i<=(n-gap);i++){
+if(s[i].rn > s[i+gap].rn){
+temp = s[i];
+s[i] = s[i+gap];
+s[i+gap] = temp;
+swap = 1;
+}
+}
+}while(swap ==1);
+display(s,n);
+}while ((gap=gap/2)>=1);
+}
+
+int main() {
+
+printf("Hello world");
+int n,srno,ch;
+
+struct student s[10];
+do{
+printf("\nChoose Operation\n 1:Accept Student Data \n 2:Display Student Data
+\n 3:Linear Search \n 4:Binary Search \n 5:Selection Sort \n 6:Insertion Sort
+\n 7:Shell Sort\n");
+scanf("%d",&ch);
+switch(ch){
+case 1:
+printf("\nEnter no of students: ");
+scanf("%d",&n);
+accept(s,n);
+break;
+case 2:
+display(s,n);
+break;
+
+case 3:
+printf("\nEnter roll no to search: ");
+scanf("%d",&srno);
+linear_search(s,n,srno);
+break;
+case 4:
+printf("\nEnter roll no to search: ");
+scanf("%d",&srno);
+binary_search(s,n,srno);
+break;
+case 5:
+selection_sort(s,n);
+break;
+case 6:
+insertion_sort(s,n);
+break;
+case 7:
+shell_sort(s,n);
+break;
+}
+}while(ch<8);
+return 0;
+}
